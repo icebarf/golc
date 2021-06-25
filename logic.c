@@ -1,23 +1,6 @@
 #include "logic.h"
 #include "board.h"
 
-// Names to access elements of cell_neighbors array
-enum names_n {T_Neighbor, TL_Neighbor, TR_Neighbor, 
-                L_Neighbor, R_Neighbor, 
-            B_Neighbor, BL_Neighbor, BR_Neighbor};
-
-/* Need to calculate the states of cell_neighbors for that we have the initial
- * board state. We have that, next we need to implement to logic to check the
- * states of neighbors. Now we know the Neighbors are other elements of our
- * 2-D array. We can create two variants of cell_neighbors like we created two
- * board arrays. We first assign elements of each cell_neighbors to the initial
- * state of cells. Then we calculate which cell should be alive or dead
- * then we set the new statuses of cell_neighbors to the next board array
- * then print it. Rinse and repeat for whole game.
- * The we can maybe try to implement gui. Still undecided if wanna play with
- * ncurses and sleep(1) or maybe implement a opengl gui
-*/
-
 nb_stat **init_nb_stats(){
     nb_stat **cell_nb_stats = calloc(LENGTH_B, WIDTH_B);
     return cell_nb_stats;
@@ -122,6 +105,10 @@ void handle_frow(nb_stat **cell_nb_stats){
         if(i == 1) {handle_row1(cell_nb_stats); i+=WIDTH_B-3; continue;}
         if(i == WIDTH_B-1){handle_c2(cell_nb_stats); continue;}
    }
+}
+
+void handle_lrow(nb_stat **cell_nb_stats){
+    // Implementation goes here
 }
 
 void handle_rows(int i, nb_stat **cell_nb_stats){
