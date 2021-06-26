@@ -1,0 +1,6 @@
+IndentWidth: 4
+ColumnLimit: 80
+MaxEmptyLinesToKeep: 2
+BreakBeforeBinaryOperators: true
+BreakBeforeTernaryOperators: true
+ConstructorInitializerIndentWidth: 10
