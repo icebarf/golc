@@ -1,6 +1,6 @@
 CC = gcc
 INC = -lncursesw
-WARN = -Wall -Wextra
+WARN = -Wall -Wextra -Wpedantic
 
-all: board.c board.h
-	$(CC) $(WARN) board.c $(INC) -o board
+all: board.c board.h gol.c logic.c logic.h
+	$(CC) $(WARN) gol.c board.c logic.c -g $(INC) -o gameoflife
