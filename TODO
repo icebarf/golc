@@ -1,12 +1,12 @@
 Build a data structure to store board state     -           [/]
 Pretty print the board to terminal              -           [/]
-Given a starting board state, calculate next    -           []
-Run the game forever                            -           []
+Given a starting board state, calculate next    -           [/]
+Run the game forever                            -           [/]
+Implement Graphics using SDL2 or equivalent     -           [ ]
 
 --------------------------------------------------------------
 
 Save interesting start pos to files and add load-and-save   []
-Improve UI once implemented                                 []
 
 --------------------------------------------------------------
 
