@@ -15,7 +15,6 @@ int main() {
     copy_board(life_board_next, life_board);
 
     while (1) {
-        /*cell_nb_stats = init_nb_stats()*/
         set_cell_status(cell_nb_stats);
         set_neighbor_count(cell_nb_stats);
         create_board(life_board_init);
@@ -28,6 +27,5 @@ int main() {
                 cell_nb_stats[i][j].status = 0;
             }
         }
-        /*rid_stats(cell_nb_stats);*/
     }
 }
