@@ -20,6 +20,9 @@ for initial game states which you may find interesting.
 If you have any suggestions regarding code quality and improvements to be made and such, then please let me know by creating an issue on github.
 
 ## Building
+
+- Make sure ncurses library is installed
+
 - Clone the repository at a desired location
 
 - cd golc
