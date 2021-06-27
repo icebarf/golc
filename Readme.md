@@ -19,9 +19,13 @@ for initial game states which you may find interesting.
 
 If you have any suggestions regarding code quality and improvements to be made and such, then please let me know by creating an issue on github.
 
-## Building
+## Dependencies
 
-- Make sure ncurses library is installed
+- libncurses
+
+- make
+
+## Building
 
 - Clone the repository at a desired location
 
