@@ -1,6 +1,10 @@
 IndentWidth: 4
 ColumnLimit: 80
 MaxEmptyLinesToKeep: 2
+AlignTrailingComments: true
+AllowShortFunctionsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
 BreakBeforeBinaryOperators: true
 BreakBeforeTernaryOperators: true
 ConstructorInitializerIndentWidth: 10
