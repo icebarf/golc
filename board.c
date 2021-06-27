@@ -1,11 +1,26 @@
 #include "board.h"
 #include <curses.h>
 #include <locale.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-bool life_board[LENGTH_B][WIDTH_B] = {false};
+typedef bool bool_array[LENGTH_B];
+
+bool_array *init_board() {
+    bool(*life_board)[WIDTH_B] = malloc(WIDTH_B * sizeof(*life_board));
+    return life_board;
+}
+
+void reset_board(bool (*life_board)[LENGTH_B]) {
+    for_length {
+        for_width {
+            life_board[i][j] = false;
+        }
+    }
+}
 
 // Call "srand(time(NULL))" before calling this function
-void random_lb(int length_b, int width_b) {
+void random_lb(int length_b, int width_b, bool (*life_board)[LENGTH_B]) {
     for (int len = 0; len < length_b; len++) {
         for (int wid = 0; wid < width_b; wid++) {
             life_board[len][wid] = rand() % 2;
@@ -13,7 +28,7 @@ void random_lb(int length_b, int width_b) {
     }
 }
 
-void copy_board(bool dest[LENGTH_B][WIDTH_B], bool src[LENGTH_B][WIDTH_B]) {
+void copy_board(bool (*dest)[LENGTH_B], bool (*src)[LENGTH_B]) {
     for (int i = 0; i < LENGTH_B; i++) {
         for (int j = 0; j < WIDTH_B; j++) {
             dest[i][j] = src[i][j];
@@ -23,7 +38,7 @@ void copy_board(bool dest[LENGTH_B][WIDTH_B], bool src[LENGTH_B][WIDTH_B]) {
 
 // A stand-in ncurses window for testing until graphics are implemented
 // Create a window and print a bord
-void create_board(bool board[LENGTH_B][WIDTH_B]) {
+void create_board(bool (*board)[LENGTH_B]) {
     initscr();
     noecho();
     cbreak();
@@ -46,4 +61,5 @@ void create_board(bool board[LENGTH_B][WIDTH_B]) {
         mvwprintw(board_win, i, j, "\n");
         wrefresh(board_win);
     }
+    usleep(30000);
 }

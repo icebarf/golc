@@ -1,18 +1,23 @@
 #include "logic.h"
 #include "board.h"
+#include <stdlib.h>
 
-/*nb_stat **init_nb_stats() {
-    nb_stat cell_nb_stats[LENGTH_B][WIDTH_B] = calloc(LENGTH_B * WIDTH_B,
-sizeof(nb_stat)); return cell_nb_stats;
-}*/
 
-extern nb_stat cell_nb_stats[LENGTH_B][WIDTH_B];
-bool life_board_init[LENGTH_B][WIDTH_B] = {false};
-bool life_board_next[LENGTH_B][WIDTH_B] = {false};
-bool life_board_mid[LENGTH_B][WIDTH_B] = {false};
+nb_stat_array *init_stats() {
+    nb_stat(*cell_nb_stats)[LENGTH_B]
+        = malloc(WIDTH_B * sizeof(*cell_nb_stats));
+    return cell_nb_stats;
+}
 
-/* void rid_stats(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
- * free(cell_nb_stats); } */
+void reset_stats(nb_stat (*cell_nb_stats)[LENGTH_B]) {
+    for_length {
+        for_width {
+            cell_nb_stats[i][j].alive = 0;
+            cell_nb_stats[i][j].dead = 0;
+            cell_nb_stats[i][j].status = CL_DEAD;
+        }
+    }
+}
 
 /* Board has 4 corners
  * c1 = first element of first row
@@ -21,7 +26,8 @@ bool life_board_mid[LENGTH_B][WIDTH_B] = {false};
  * c4 = last element of last row
  */
 
-void handle_c1(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_c1(nb_stat (*cell_nb_stats)[LENGTH_B],
+               bool (*life_board_init)[LENGTH_B]) {
     // Checks & Sets cell to the right of first cell
     if (life_board_init[0][1] == CL_ALIVE) {
         cell_nb_stats[0][0].alive++;
@@ -44,7 +50,8 @@ void handle_c1(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
     }
 }
 
-void handle_c2(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_c2(nb_stat (*cell_nb_stats)[LENGTH_B],
+               bool (*life_board_init)[LENGTH_B]) {
     // Check & Sets cell to the left of last cell
     if (life_board_init[0][WIDTH_B - 2] == CL_ALIVE) {
         cell_nb_stats[0][WIDTH_B - 1].alive++;
@@ -66,7 +73,8 @@ void handle_c2(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
     }
 }
 
-void handle_c3(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_c3(nb_stat (*cell_nb_stats)[LENGTH_B],
+               bool (*life_board_init)[LENGTH_B]) {
     // Check & Sets cell to the left of last cell
     if (life_board_init[LENGTH_B - 1][1] == CL_ALIVE) {
         cell_nb_stats[LENGTH_B - 1][0].alive++;
@@ -89,7 +97,8 @@ void handle_c3(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
     }
 }
 
-void handle_c4(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_c4(nb_stat (*cell_nb_stats)[LENGTH_B],
+               bool (*life_board_init)[LENGTH_B]) {
     // Check & Sets cell to the left of last cell
     if (life_board_init[LENGTH_B - 1][WIDTH_B - 2] == CL_ALIVE) {
         cell_nb_stats[LENGTH_B - 1][WIDTH_B - 1].alive++;
@@ -112,7 +121,8 @@ void handle_c4(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
     }
 }
 
-void handle_row1(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_row1(nb_stat (*cell_nb_stats)[LENGTH_B],
+                 bool (*life_board_init)[LENGTH_B]) {
     for_width {
         // Handle element to the right
         if (life_board_init[0][j + 1] == CL_ALIVE) {
@@ -148,7 +158,8 @@ void handle_row1(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
 }
 
 
-void handle_col0(int row, int col, nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_col0(int row, int col, nb_stat (*cell_nb_stats)[LENGTH_B],
+                 bool (*life_board_init)[LENGTH_B]) {
     /* Handle case for top elements */
     if (life_board_init[row - 1][col] == CL_ALIVE) {
         cell_nb_stats[row][col].alive++;
@@ -181,7 +192,8 @@ void handle_col0(int row, int col, nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
     }
 }
 
-void handle_cols(int row, int col, nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_cols(int row, int col, nb_stat (*cell_nb_stats)[LENGTH_B],
+                 bool (*life_board_init)[LENGTH_B]) {
     /* Handle case for top element */
     if (life_board_init[row - 1][col] == CL_ALIVE) {
         cell_nb_stats[row][col].alive++;
@@ -232,7 +244,8 @@ void handle_cols(int row, int col, nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
     }
 }
 
-void handle_coll(int row, int col, nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_coll(int row, int col, nb_stat (*cell_nb_stats)[LENGTH_B],
+                 bool (*life_board_init)[LENGTH_B]) {
     /* Handle case for element on top */
     if (life_board_init[row - 1][col] == CL_ALIVE) {
         cell_nb_stats[row][col].alive++;
@@ -265,7 +278,8 @@ void handle_coll(int row, int col, nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
     }
 }
 
-void handle_row_last(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_row_last(nb_stat (*cell_nb_stats)[LENGTH_B],
+                     bool (*life_board_init)[LENGTH_B]) {
     for_width {
         /* Handle element to the left */
         if (life_board_init[LENGTH_B - 1][j - 1] == CL_ALIVE) {
@@ -301,60 +315,64 @@ void handle_row_last(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
 }
 
 /* Function sets the first corner, second corner and the elements in between */
-void handle_frow(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_frow(nb_stat (*cell_nb_stats)[LENGTH_B],
+                 bool (*life_board_init)[LENGTH_B]) {
     for_length {
         if (i == 0) {
-            handle_c1(cell_nb_stats);
+            handle_c1(cell_nb_stats, life_board_init);
             continue;
         }
         if (i == 1) {
-            handle_row1(cell_nb_stats);
+            handle_row1(cell_nb_stats, life_board_init);
             i += WIDTH_B - 3;
             continue;
         }
         if (i == WIDTH_B - 1) {
-            handle_c2(cell_nb_stats);
+            handle_c2(cell_nb_stats, life_board_init);
             continue;
         }
     }
 }
 
 /* Function sets all rows except the first and last row */
-void handle_rows(int row, int col, nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_rows(int row, int col, nb_stat (*cell_nb_stats)[LENGTH_B],
+                 bool (*life_board_init)[LENGTH_B]) {
     /* Handle case for cells on left edge */
     if (col == 0) {
-        handle_col0(row, col, cell_nb_stats);
+        handle_col0(row, col, cell_nb_stats, life_board_init);
     }
     /* Handle case for cells in between edges */
     if (col > 0 && col < WIDTH_B - 1) {
-        handle_cols(row, col, cell_nb_stats);
+        handle_cols(row, col, cell_nb_stats, life_board_init);
     }
     /* Handle case for cells on right edge */
     if (col == WIDTH_B - 1) {
-        handle_coll(row, col, cell_nb_stats);
+        handle_coll(row, col, cell_nb_stats, life_board_init);
     }
 }
 
 /* Function sets the last row using row_last, c3 and c4. */
-void handle_lrow(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void handle_lrow(nb_stat (*cell_nb_stats)[LENGTH_B],
+                 bool (*life_board_init)[LENGTH_B]) {
     for_length {
         if (i == 0) {
-            handle_c3(cell_nb_stats);
+            handle_c3(cell_nb_stats, life_board_init);
             continue;
         }
         if (i == 1) {
-            handle_row_last(cell_nb_stats);
+            handle_row_last(cell_nb_stats, life_board_init);
             i += WIDTH_B - 3;
             continue;
         }
         if (i == WIDTH_B - 1) {
-            handle_c4(cell_nb_stats);
+            handle_c4(cell_nb_stats, life_board_init);
             continue;
         }
     }
 }
 
-void set_cell_status(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void set_cell_status(nb_stat (*cell_nb_stats)[LENGTH_B],
+                     bool (*life_board_init)[LENGTH_B]) {
     for_length {
         for_width {
             if (life_board_init[i][j] == CL_ALIVE) {
@@ -366,24 +384,26 @@ void set_cell_status(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
     }
 }
 
-void set_neighbor_count(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void set_neighbor_count(nb_stat (*cell_nb_stats)[LENGTH_B],
+                        bool (*life_board_init)[LENGTH_B]) {
     for_length {
         for_width {
             if (i == 0) {
-                handle_frow(cell_nb_stats);
+                handle_frow(cell_nb_stats, life_board_init);
                 break;
             }
             if ((i > 0) && (i < LENGTH_B - 1)) {
-                handle_rows(i, j, cell_nb_stats);
+                handle_rows(i, j, cell_nb_stats, life_board_init);
             }
             if (i == LENGTH_B - 1) {
-                handle_lrow(cell_nb_stats);
+                handle_lrow(cell_nb_stats, life_board_init);
             }
         }
     }
 }
 
-void calculate_next_gen(nb_stat cell_nb_stats[LENGTH_B][WIDTH_B]) {
+void calculate_next_gen(nb_stat (*cell_nb_stats)[LENGTH_B],
+                        bool (*life_board_mid)[LENGTH_B]) {
     for_length {
         for_width {
             if (cell_nb_stats[i][j].status == CL_ALIVE) {
