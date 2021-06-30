@@ -7,7 +7,7 @@
 typedef bool bool_array[LENGTH_B];
 
 bool_array *init_board() {
-    bool(*life_board)[WIDTH_B] = malloc(WIDTH_B * sizeof(*life_board));
+    bool(*life_board)[LENGTH_B] = malloc(WIDTH_B * sizeof(*life_board));
     return life_board;
 }
 
