@@ -61,5 +61,5 @@ void create_board(bool (*board)[LENGTH_B]) {
         mvwprintw(board_win, i, j, "\n");
         wrefresh(board_win);
     }
-    usleep(30000);
+    usleep(100000);
 }

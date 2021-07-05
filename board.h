@@ -11,8 +11,8 @@
 #include <stddef.h>
 #include <string.h>
 
-#define WIDTH_B    100
-#define LENGTH_B   100
+#define WIDTH_B    50
+#define LENGTH_B   50
 
 /* For Loop macros */
 #define for_length      for(long int i = 0; i < LENGTH_B; i++)
